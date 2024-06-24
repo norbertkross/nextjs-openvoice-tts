@@ -1,0 +1,16 @@
+
+.main{
+    
+    padding: 12px 30px;
+}
+
+.generate-speech-button{
+    background-color: blueviolet;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 5px;
+}
+
+.textarea-deco{
+    border: 1px solid blueviolet;
+}

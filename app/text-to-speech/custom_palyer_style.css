@@ -1,0 +1,43 @@
+.audio-player {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .play-pause-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .play-pause-button:hover {
+    background-color: #45a049;
+  }
+  
+  .progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #ddd;
+    cursor: pointer;
+    position: relative;
+    border-radius: 5px;
+  }
+  
+  .progress {
+    height: 100%;
+    background-color: #4caf50;
+    width: 0;
+    border-radius: 5px;
+  }
+  
+  .volume-slider {
+    width: 100px;
+  }
+  
+  .time-display {
+    font-size: 14px;
+  }
+  
