@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import TTS from "./text-to-speech/page";
 
