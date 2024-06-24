@@ -2,8 +2,8 @@ import { rejects } from "assert";
 import { List } from "postcss/lib/list";
 
 // const serverUrl:string = "http://localhost:8000/generate" 
-// const serverUrl:string = "http://ec2-16-170-254-118.eu-north-1.compute.amazonaws.com/generate" 
-const serverUrl:string = "/api/get-audio-stream" 
+const serverUrl:string = "http://ec2-16-170-254-118.eu-north-1.compute.amazonaws.com/generate" 
+// const serverUrl:string = "/api/get-audio-stream" 
 
 export const splitText=(text: string, maxChunkSize: number): string[] =>{
     const regex = new RegExp(`(.{1,${maxChunkSize}})(\\s|$)`, 'g');
