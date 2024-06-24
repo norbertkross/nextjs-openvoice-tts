@@ -102,7 +102,7 @@ export function playAudioBufferSequencially(audioContext: AudioContext, audioBuf
   }
  
 
-  export const playBitByBit = async(text:string,maxChunkLen:number =150)=>{
+  export const playBitByBit = async(text:string,maxChunkLen:number =150): Promise<string>=>{
 
     // for (let i = 0; i < textChunks.length; i++) {
     //   const audioBuffer = await fetchAudioChunk(textChunks[i]);
@@ -117,35 +117,38 @@ export function playAudioBufferSequencially(audioContext: AudioContext, audioBuf
     const textChunks = splitText(text, maxChunkSize);
     const audioContext = new (window.AudioContext )();
 
-    recursePlayer(textChunks)
+   await recursePlayer(textChunks)
+   console.log(".......Done playing");
+   
     resolve("ok")
-    return
+    // return
 
-    const firstAudioBuffer = await fetchAudioChunk(textChunks[0]);
+    // const firstAudioBuffer = await fetchAudioChunk(textChunks[0]);
 
-    const firstChunkPromise = playAudioBufferSequencially(audioContext, firstAudioBuffer);
+    // const firstChunkPromise = playAudioBufferSequencially(audioContext, firstAudioBuffer);
   
-    // Load remaining chunks in the background
-    const remainingBuffersPromises = textChunks.slice(1).map(fetchAudioChunk);
+    // // Load remaining chunks in the background
+    // const remainingBuffersPromises = textChunks.slice(1).map(fetchAudioChunk);
 
-    // Play the remaining chunks sequentially after the first chunk finishes
-    firstChunkPromise.then(async () => {
-      const remainingBuffers = await Promise.all(remainingBuffersPromises);
-      let index:number = 0
-      for (const audioBuffer of remainingBuffers) {
-        index = index + 1
-        await playAudioBufferSequencially(audioContext, audioBuffer);
-        if(index == remainingBuffers.length){
-            return resolve(true)
-        }
-      }
-    }).catch(e=>{
-        reject()
-    });
+    // // Play the remaining chunks sequentially after the first chunk finishes
+    // firstChunkPromise.then(async () => {
+    //   const remainingBuffers = await Promise.all(remainingBuffersPromises);
+    //   let index:number = 0
+    //   for (const audioBuffer of remainingBuffers) {
+    //     index = index + 1
+    //     await playAudioBufferSequencially(audioContext, audioBuffer);
+    //     if(index == remainingBuffers.length){
+    //         return resolve(true)
+    //     }
+    //   }
+    // }).catch(e=>{
+    //     reject()
+    // });
   });
 }
 
-const recursePlayer =async(allChunks:string[])=>{
+const recursePlayer =async(allChunks:string[]): Promise<string> =>{
+  return new Promise(async(resolve) => {
     if(allChunks.length > 0){
         const audioContext = new (window.AudioContext )();
 
@@ -177,9 +180,48 @@ const recursePlayer =async(allChunks:string[])=>{
               }
         
               recursePlayer(allChunks)
+            }).finally(()=>{
+              // resolve("DONE")
             }); 
+        }else{
+          resolve("DONE")
         }
 
+    }else{
+      resolve("OK")
     }
+  })
   
+}
+
+
+export const play =async(text:string,maxChunkLen:number =150)=>{
+  return new Promise(async(resolve,reject) => {
+  const maxChunkSize = maxChunkLen; 
+  const textChunks = splitText(text, maxChunkSize);
+  const audioContext = new (window.AudioContext )();
+
+    const firstAudioBuffer = await fetchAudioChunk(textChunks[0]);
+
+    const firstChunkPromise = playAudioBufferSequencially(audioContext, firstAudioBuffer);
+  
+    // Load remaining chunks in the background
+    const remainingBuffersPromises = textChunks.slice(1).map(fetchAudioChunk);
+
+    // Play the remaining chunks sequentially after the first chunk finishes
+    firstChunkPromise.then(async () => {
+      const remainingBuffers = await Promise.all(remainingBuffersPromises);
+      let index:number = 0
+      for (const audioBuffer of remainingBuffers) {
+        index = index + 1
+        await playAudioBufferSequencially(audioContext, audioBuffer);
+        if(index == remainingBuffers.length){
+            return resolve("OK")
+        }
+      }
+    }).catch(e=>{
+        reject()
+    });
+
+  })
 }

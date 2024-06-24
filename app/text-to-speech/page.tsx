@@ -5,16 +5,17 @@ import { FormEvent, useState, useRef, useEffect } from 'react';
 import './style.css'
 import axios, { AxiosRequestConfig } from 'axios';
 import Image from 'next/image'
-import { playBitByBit } from '../(utilities)/utils';
+import { playBitByBit,play } from '../(utilities)/utils';
 
 
-const serverUrl:string = "/api/get-audio-stream" 
+// const serverUrl:string = "/api/get-audio-stream" 
 // const serverUrl:string = "http://localhost:8000/generate" 
-// const serverUrl:string = "http://ec2-16-170-254-118.eu-north-1.compute.amazonaws.com/generate" 
+const serverUrl:string = "http://ec2-16-170-254-118.eu-north-1.compute.amazonaws.com/generate" 
 
 export default function TTS() {
   const [text, setText] = useState(
-    "The young entrepreneur's eyes sparkled with determination as she launched her sustainable fashion brand. With a focus on eco-friendly materials and ethical production practices, she aimed to revolutionize the industry. Her passion and dedication inspired a new generation of consumers to embrace responsible fashion, making a positive impact on the planet. As her brand grew, she collaborated with influencers and designers who shared her vision. Together, they created stunning pieces that not only made a statement but also reduced waste and supported fair labor practices. Her brand became synonymous with style and sustainability, appealing to consumers who cared about the environment and social justice."
+    "The young entrepreneur's eyes sparkled with determination as she launched her sustainable fashion brand. With a focus on eco-friendly materials and ethical production practices, she aimed to revolutionize the industry. Her passion and dedication inspired a new generation of consumers."
+    // "The young entrepreneur's eyes sparkled with determination as she launched her sustainable fashion brand. With a focus on eco-friendly materials and ethical production practices, she aimed to revolutionize the industry. Her passion and dedication inspired a new generation of consumers to embrace responsible fashion, making a positive impact on the planet. As her brand grew, she collaborated with influencers and designers who shared her vision. Together, they created stunning pieces that not only made a statement but also reduced waste and supported fair labor practices. Her brand became synonymous with style and sustainability, appealing to consumers who cared about the environment and social justice."
     // "The young entrepreneur's eyes sparkled with determination as she launched her sustainable fashion brand. With a focus on eco-friendly materials and ethical production practices, she aimed to revolutionize the industry. Her passion and dedication inspired a new generation of consumers to embrace responsible fashion, making a positive impact on the planet. As her brand grew, she collaborated with influencers and designers who shared her vision."
   );
   const [audioSrc, setAudioSrc] = useState('');
@@ -38,12 +39,20 @@ export default function TTS() {
 
     // handleTextToSpeech("The young entrepreneur's eyes sparkled with determination as she launched her sustainable fashion brand. With a focus on eco-friendly materials and ethical production practices, she aimed to revolutionize the industry. Her passion and dedication inspired a new generation of consumers to embrace responsible fashion, making a positive impact on the planet. As her brand grew, she collaborated with influencers and designers who shared her vision. Together, they created stunning pieces that not only made a statement but also reduced waste and supported fair labor practices. Her brand became synonymous with style and sustainability, appealing to consumers who cared about the environment and social justice.")
     
-    // playTTS("The young entrepreneur's eyes sparkled with determination as she launched her sustainable fashion brand. With a focus on eco-friendly materials and ethical production practices, she aimed to revolutionize the industry. Her passion and dedication inspired a new generation of consumers to embrace responsible fashion, making a positive impact on the planet. As her brand grew, she collaborated with influencers and designers who shared her vision. Together, they created stunning pieces that not only made a statement but also reduced waste and supported fair labor practices. Her brand became synonymous with style and sustainability, appealing to consumers who cared about the environment and social justice.")
-      await playBitByBit(
+    // // playTTS("The young entrepreneur's eyes sparkled with determination as she launched her sustainable fashion brand. With a focus on eco-friendly materials and ethical production practices, she aimed to revolutionize the industry. Her passion and dedication inspired a new generation of consumers to embrace responsible fashion, making a positive impact on the planet. As her brand grew, she collaborated with influencers and designers who shared her vision. Together, they created stunning pieces that not only made a statement but also reduced waste and supported fair labor practices. Her brand became synonymous with style and sustainability, appealing to consumers who cared about the environment and social justice.")
+    
+    //   await playBitByBit(
+    //     text
+    //     // "The young entrepreneur's eyes sparkled with determination as she launched her sustainable fashion brand. With a focus on eco-friendly materials and ethical production practices, she aimed to revolutionize the industry. Her passion and dedication inspired a new generation of consumers to embrace responsible fashion, making a positive impact on the planet. As her brand grew, she collaborated with influencers and designers who shared her vision. Together, they created stunning pieces that not only made a statement but also reduced waste and supported fair labor practices. Her brand became synonymous with style and sustainability, appealing to consumers who cared about the environment and social justice."
+    //   ,
+    //   50
+    // )
+    
+      await play(
         text
         // "The young entrepreneur's eyes sparkled with determination as she launched her sustainable fashion brand. With a focus on eco-friendly materials and ethical production practices, she aimed to revolutionize the industry. Her passion and dedication inspired a new generation of consumers to embrace responsible fashion, making a positive impact on the planet. As her brand grew, she collaborated with influencers and designers who shared her vision. Together, they created stunning pieces that not only made a statement but also reduced waste and supported fair labor practices. Her brand became synonymous with style and sustainability, appealing to consumers who cared about the environment and social justice."
       ,
-      150
+      80
     )
       setFetchingAudioState(false)
    
@@ -141,6 +150,7 @@ export default function TTS() {
           cols={60}
           placeholder="Enter text to synthesize"
           className='textarea-deco'
+          maxLength={300}
         />
 
         <br />
