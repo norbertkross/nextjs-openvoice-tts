@@ -28,5 +28,3 @@ bun dev
 
 Open [http://localhost:3000/text-to-speech](http://localhost:3000/text-to-speech) with your browser to interact with the text to speech app.
 
-
-

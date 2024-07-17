@@ -2,8 +2,8 @@ import { rejects } from "assert";
 import { List } from "postcss/lib/list";
 
 // const serverUrl:string = "http://localhost:8000/generate" 
-const serverUrl:string = "http://ec2-16-170-254-118.eu-north-1.compute.amazonaws.com/generate" 
-// const serverUrl:string = "/api/get-audio-stream" 
+// const serverUrl:string = "http://ec2-16-170-254-118.eu-north-1.compute.amazonaws.com/generate" 
+const serverUrl:string = "/api/get-audio-stream" 
 
 export const splitText=(text: string, maxChunkSize: number): string[] =>{
     const regex = new RegExp(`(.{1,${maxChunkSize}})(\\s|$)`, 'g');
@@ -225,3 +225,93 @@ export const play =async(text:string,maxChunkLen:number =150)=>{
 
   })
 }
+
+
+// Test speed 1
+// 43.324s
+// 44.514s
+// 42.934s
+// 40.197s
+// 41.504s
+export const defaultSpeed =async(text:string)=>{
+
+  return new Promise(async(resolve,reject) => {
+    const start = new Date().getTime();
+
+
+    const audioContext = new (window.AudioContext )();
+
+    const firstAudioBuffer = await fetchAudioChunk(text);
+    const end = new Date().getTime();
+    const executionTime = end - start;
+    console.log(`DEFAULT Execution time: ${executionTime / 1000}s`);
+    const firstChunkPromise = playAudioBufferSequencially(audioContext, firstAudioBuffer);
+    firstChunkPromise.then(async () => {
+     
+      return resolve("OK")
+    }).catch(e=>{reject()});
+  });
+  
+}
+
+
+
+// multiRequestSpeed Test speed 2
+// 59.157s
+// 59.508s
+// 59.352s
+// 60.456s
+
+export const multiRequestSpeed =async(text:string,maxChunkLen:number =150)=>{
+
+  return new Promise(async(resolve,reject) => {
+
+    const maxChunkSize = maxChunkLen; 
+    const textChunks = splitText(text, maxChunkSize);
+    const audioContext = new (window.AudioContext )();    
+
+    const start = new Date().getTime();
+
+   let blobs:Blob[]  = await fetchTTSmulti(textChunks)
+
+   const end = new Date().getTime();
+   const executionTime = end - start;
+   console.log(`Multi-Request-Speed Execution time: ${executionTime / 1000}s`);
+
+   let audioBuffer:AudioBuffer = await combineAudioBlobs(blobs)
+
+    playAudioBufferSequencially(audioContext, audioBuffer)
+    .then((e)=>{return resolve("OK")})
+    .catch((e)=>{return reject()});
+
+  });
+
+}
+
+
+// imporvedSpeed Test speed 3
+// 49.959s 
+// 45.165s
+export const imporvedSpeed =async(text:string)=>{
+
+  return new Promise(async(resolve,reject) => {
+    const start = new Date().getTime();
+
+
+    const audioContext = new (window.AudioContext )();
+
+    const firstAudioBuffer = await fetchAudioChunk(text);
+    const end = new Date().getTime();
+    const executionTime = end - start;
+    console.log(`FASTER Execution time: ${executionTime / 1000}s`);
+    const firstChunkPromise = playAudioBufferSequencially(audioContext, firstAudioBuffer);
+    firstChunkPromise.then(async () => {
+     
+      return resolve("OK")
+    }).catch(e=>{reject()});
+  });
+
+}
+
+// 27.942
+// 24.071s

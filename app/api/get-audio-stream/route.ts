@@ -14,9 +14,9 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
 
  
-  // const pythonEndpoint = 'http://localhost:8000/generate';
-  const pythonEndpoint = "http://ec2-16-170-254-118.eu-north-1.compute.amazonaws.com/generate";
-  const serverUrl:string = "/api/get-audio-stream" 
+  const pythonEndpoint = 'http://localhost:8000/generate';
+  // const pythonEndpoint = "http://ec2-16-170-254-118.eu-north-1.compute.amazonaws.com/generate";
+  // "/api/get-audio-stream" 
   // Fetch request body
   const body = await req.json();
   
