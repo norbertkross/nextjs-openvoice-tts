@@ -3,28 +3,9 @@
 
 # Get Docker Image and Serve 
 
-get the docker image
-`docker pull norbertaberor/creative_open_voice:tts_api`
+First run the setup and run the api from [here](https://github.com/norbertkross/fastapi-openvoice-tts)
 
-run the it
-`docker run -d --name my_fastapi_container -p 8000:8000 open-voice-app`
-
-the image would be running here
-`http://localhost:8000/generate`
+![image](https://github.com/norbertkross/nextjs-openvoice-tts/blob/main/demo.png?raw=true)
 
 
-# Run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-
-Open [http://localhost:3000/text-to-speech](http://localhost:3000/text-to-speech) with your browser to interact with the text to speech app.
 
